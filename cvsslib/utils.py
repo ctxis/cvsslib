@@ -3,11 +3,18 @@ from functools import partial
 from .base_enum import BaseEnum
 
 
-def get_enums(module):
-    module_members = inspect.getmembers(module)
+def get_enums(obj, only_classes=True):
+    module_members = inspect.getmembers(obj)
 
     for name, obj in module_members:
-        if inspect.isclass(obj) and issubclass(obj, BaseEnum) and obj is not BaseEnum:
+        if inspect.isclass(obj):
+            process = issubclass(obj, BaseEnum)
+        elif not only_classes:
+            process = isinstance(obj, BaseEnum)
+        else:
+            continue
+
+        if process and obj is not BaseEnum:
             yield name, obj
 
 

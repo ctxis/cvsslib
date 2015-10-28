@@ -46,7 +46,7 @@ def parse_vector(vector, module=None):
         vector_values[enum] = value_from_key
         given_keys.add(key)
 
-        print("{0} = {1} ({2})".format(enum, value_from_key, key))
+        #print("{0} = {1} ({2})".format(enum, value_from_key, key))
 
     required_diff = mandatory_keys.difference(given_keys)
 

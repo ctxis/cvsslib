@@ -16,43 +16,49 @@ def make_attribute_name(str):
     return returner
 
 
-def cvss_mixin(module, base=type, field_callback=None):
-    class CVSSMetaclass(base):
-        @classmethod
-        def __prepare__(mcs, *args, **kwargs):
-            returner = super().__prepare__(*args, **kwargs)
+def cvss_mixin_data(module, field_callback=None):
 
-            enum_dict = {}
+    returner = {}
+    enum_dict = {}
 
-            for name, obj in get_enums(module):
-                attr_name = make_attribute_name(name)
-                default = obj.get_default().value
+    for name, obj in get_enums(module):
+        attr_name = make_attribute_name(name)
+        default = obj.get_default()
 
-                if field_callback is None:
-                    returner[attr_name] = default
-                else:
-                    returner[attr_name] = field_callback(attr_name, obj)
+        if field_callback is None:
+            returner[attr_name] = default
+        else:
+            returner[attr_name] = field_callback(attr_name, obj)
 
-                enum_dict[obj] = attr_name
+        enum_dict[obj] = attr_name
 
-            calculate_func = getattr(module, "calculate", None)
+    calculate_func = getattr(module, "calculate", None)
 
-            if not calculate_func:
-                raise RuntimeError("Cannot find 'calculate' method in {module}".format(module=module))
+    if not calculate_func:
+        raise RuntimeError("Cannot find 'calculate' method in {module}".format(module=module))
 
-            # Make the 'calculate' method
-            def _calculate(self):
-                def _getter(enum_type):
-                    member_name = enum_dict[enum_type]
-                    return getattr(self, member_name)
+    # Make the 'calculate' method
+    def _calculate(self):
+        def _getter(enum_type):
+            member_name = enum_dict[enum_type]
+            return getattr(self, member_name)
 
-                return run_calc(calculate_func, _getter)
+        return run_calc(calculate_func, getter=_getter)
 
-            returner["calculate"] = _calculate
+    returner["calculate"] = _calculate
+    return returner
 
-            return returner
 
-    return CVSSMetaclass
+def class_mixin(module, base=object):
+    class CVSSMixin(base):
+        def __init__(self, *args, **kwargs):
+
+            for thing, value in cvss_mixin_data(module).items():
+                setattr(self, thing, value)
+
+            super().__init__(*args, **kwargs)
+
+    return CVSSMixin
 
 
 def django_mixin(module, base=None):
@@ -74,4 +80,15 @@ def django_mixin(module, base=None):
                                    default=enum_cls.get_default(),
                                    null=nullable)
 
-    return cvss_mixin(module, base, field_callback)
+    class CVSSMetaclass(base):
+        @classmethod
+        def __prepare__(mcs, *args, **kwargs):
+            returner = super().__prepare__(*args, **kwargs)
+
+            mixin_data = cvss_mixin_data(module, field_callback)
+            returner.update(mixin_data)
+
+            return returner
+
+    return CVSSMetaclass
+

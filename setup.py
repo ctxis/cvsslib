@@ -7,6 +7,6 @@ setup(
     url='',
     license='',
     author='Tom',
-    author_email='',
+    author_email='tom.forbes@contextis.co.uk',
     description='CVSS 2/3 utilities'
 )

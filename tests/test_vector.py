@@ -16,7 +16,8 @@ v3_test_vectors = [
 v2_test_vectors = [
     ("AV:L/AC:M/Au:S/C:N/I:P/A:C/E:U/RL:OF/RC:UR/CDP:N/TD:L/CR:H/IR:H/AR:H", (5, 3.5, 1.2)),
     ("AV:N/AC:M/Au:M/C:C/I:N/A:P/E:ND/RL:W/RC:UC/CDP:LM/TD:M/CR:L/IR:L/AR:L", (6.4, 5.5, 4)),
-    ("AV:L/AC:L/Au:S/C:P/I:P/A:P/E:U/RL:ND/RC:C/CDP:LM/TD:L/CR:ND/IR:H/AR:M", (4.3, 3.7, 1.5))
+    ("AV:L/AC:L/Au:S/C:P/I:P/A:P/E:U/RL:ND/RC:C/CDP:LM/TD:L/CR:ND/IR:H/AR:M", (4.3, 3.7, 1.5)),
+    ("AV:A/AC:M/Au:S/C:C/I:P/A:C", (7, 7, 7)),
 ]
 
 

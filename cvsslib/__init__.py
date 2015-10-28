@@ -1,4 +1,4 @@
-from .mixin import cvss_mixin
+from .mixin import class_mixin
 from . import cvss3, cvss2
 
 
@@ -8,11 +8,12 @@ def make_display_name(str):
     )
 
 
-class CVSS2State(metaclass=cvss_mixin(cvss2)):
+class CVSS2State(class_mixin(cvss2)):
     pass
 
 
-class CVSS3State(metaclass=cvss_mixin(cvss3)):
+class CVSS3State(class_mixin(cvss3)):
     pass
 
 
+from .vector import parse_vector

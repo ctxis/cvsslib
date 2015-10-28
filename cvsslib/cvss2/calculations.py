@@ -77,11 +77,18 @@ def calculate_environmental_score(run_calculation,
     )
 
 
-def calculate(run_calculation):
+def calculate(run_calculation, get):
     # We pass `calculate_impact` here because we need to pass a different impact function while computing the
     # environmental score
     base_score = run_calculation(calculate_base_score, calculate_impact)
-    temporal_score = run_calculation(calculate_temporal_score, base_score)
+
+    # ToDo: this doesn't work yet. NOT_DEFINED is the default but shares a value with others so
+    # it uses the other enum name instead of NOT_DEFINED
+    if all(e.value == e.NOT_DEFINED for e in {get(Exploitability), get(RemediationLevel), get(ReportConfidence)}):
+        temporal_score = None
+    else:
+        temporal_score = run_calculation(calculate_temporal_score, base_score)
+
     environmental_score = run_calculation(calculate_environmental_score)
 
     return float(base_score), float(temporal_score), float(environmental_score)

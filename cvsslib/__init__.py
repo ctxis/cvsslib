@@ -1,4 +1,5 @@
-import enum
+from .mixin import cvss_mixin
+from . import cvss3, cvss2
 
 
 def make_display_name(str):
@@ -7,42 +8,11 @@ def make_display_name(str):
     )
 
 
-class BaseEnum(enum.Enum):
-    @classmethod
-    def get_value_from_vector(cls, key):
-        key = key.lower()
+class CVSS2State(metaclass=cvss_mixin(cvss2)):
+    pass
 
-        for name, value in cls.__members__.items():
-            if name[0].lower() == key:
-                return value
 
-        if key == "x" and hasattr(cls, "NOT_DEFINED"):
-            return cls.NOT_DEFINED
+class CVSS3State(metaclass=cvss_mixin(cvss3)):
+    pass
 
-        raise RuntimeError("Unknown vector key {0} for {1}".format(key, cls))
 
-    @classmethod
-    def choices(cls):
-        return [(value.value, make_display_name(name)) for name, value in cls.__members__.items()]
-
-    @classmethod
-    def extend(cls, name, extra, doc=""):
-        cls = enum.Enum(
-            value=name,
-            names=cls.to_mapping(extra),
-            type=BaseEnum
-        )
-        cls.__doc__ = doc
-        return cls
-
-    @classmethod
-    def to_mapping(cls, extra=None):
-        returner = {
-            name: value.value
-            for name, value in cls.__members__.items()
-        }
-
-        if extra:
-            returner.update(extra)
-
-        return returner

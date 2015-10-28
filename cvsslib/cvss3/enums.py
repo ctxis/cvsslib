@@ -1,4 +1,5 @@
-from .. import BaseEnum
+from cvsslib.base_enum import BaseEnum
+from decimal import Decimal as D
 
 
 # Taken from https://www.first.org/cvss/specification-document#i8.4
@@ -9,10 +10,10 @@ class AttackVector(BaseEnum):
     Vector: AV
     Mandatory: yes
     """
-    NETWORK = 0.85
-    ADJACENT_NETWORK = 0.62
-    LOCAL = 0.55
-    PHYSICAL = 0.2
+    NETWORK = D("0.85")
+    ADJACENT_NETWORK = D("0.62")
+    LOCAL = D("0.55")
+    PHYSICAL = D("0.2")
 
 
 class AttackComplexity(BaseEnum):
@@ -20,8 +21,8 @@ class AttackComplexity(BaseEnum):
     Vector: AC
     Mandatory: yes
     """
-    LOW = 0.77
-    HIGH = 0.44
+    LOW = D("0.77")
+    HIGH = D("0.44")
 
 
 class PrivilegeRequired(BaseEnum):
@@ -29,9 +30,9 @@ class PrivilegeRequired(BaseEnum):
     Vector: PR
     Mandatory: yes
     """
-    NONE = 0.85
-    LOW = 0.62
-    HIGH = 0.27
+    NONE = D("0.85")
+    LOW = D("0.62")
+    HIGH = D("0.27")
 
 
 class UserInteraction(BaseEnum):
@@ -39,8 +40,8 @@ class UserInteraction(BaseEnum):
     Vector: UI
     Mandatory: yes
     """
-    NONE = 0.85
-    REQUIRED = 0.62
+    NONE = D("0.85")
+    REQUIRED = D("0.62")
 
 
 class Scope(BaseEnum):
@@ -48,8 +49,8 @@ class Scope(BaseEnum):
     Vector: S
     Mandatory: yes
     """
-    UNCHANGED = 0
-    CHANGED = 1
+    UNCHANGED = D("0")
+    CHANGED = D("1")
 
 
 # Impacts
@@ -58,9 +59,9 @@ class ConfidentialityImpact(BaseEnum):
     Vector: C
     Mandatory: yes
     """
-    HIGH = 0.56
-    LOW = 0.22
-    NONE = 0
+    HIGH = D("0.56")
+    LOW = D("0.22")
+    NONE = D("0")
 
 
 class IntegrityImpact(BaseEnum):
@@ -68,9 +69,9 @@ class IntegrityImpact(BaseEnum):
     Vector: I
     Mandatory: yes
     """
-    HIGH = 0.56
-    LOW = 0.22
-    NONE = 0
+    HIGH = D("0.56")
+    LOW = D("0.22")
+    NONE = D("0")
 
 
 class AvailabilityImpact(BaseEnum):
@@ -78,9 +79,9 @@ class AvailabilityImpact(BaseEnum):
     Vector: A
     Mandatory: yes
     """
-    HIGH = 0.56
-    LOW = 0.22
-    NONE = 0
+    HIGH = D("0.56")
+    LOW = D("0.22")
+    NONE = D("0")
 
 
 # Temporal metrics
@@ -88,76 +89,83 @@ class ExploitCodeMaturity(BaseEnum):
     """
     Vector: E
     """
-    NOT_DEFINED = 1
-    HIGH = 1
-    FUNCTIONAL = 0.97
-    PROOF_OF_CONCEPT = 0.94
-    UNPROVEN = 0.91
+    NOT_DEFINED = D("1")
+    HIGH = D("1")
+    FUNCTIONAL = D("0.97")
+    PROOF_OF_CONCEPT = D("0.94")
+    UNPROVEN = D("0.91")
 
 
 class RemediationLevel(BaseEnum):
     """
     Vector: RL
     """
-    NOT_DEFINED = 1
-    UNAVAILABLE = 1
-    WORKAROUND = 0.97
-    TEMPORARY_FIX = 0.96
-    OFFICIAL_FIX = 0.95
+    NOT_DEFINED = D("1")
+    UNAVAILABLE = D("1")
+    WORKAROUND = D("0.97")
+    TEMPORARY_FIX = D("0.96")
+    OFFICIAL_FIX = D("0.95")
 
 
 class ReportConfidence(BaseEnum):
     """
     Vector: RC
     """
-    NOT_DEFINED = 1
-    CONFIRMED = 1
-    REASONABLE = 0.96
-    UNKNOWN = 0.92
+    NOT_DEFINED = D("1")
+    CONFIRMED = D("1")
+    REASONABLE = D("0.96")
+    UNKNOWN = D("0.92")
 
 
-class ConfidentialityRequirements(BaseEnum):
+class ConfidentialityRequirement(BaseEnum):
     """
     Vector: CR
     """
-    NOT_DEFINED = 1
-    HIGH = 1.5
-    MEDIUM = 1
-    LOW = 0.5
+    NOT_DEFINED = D("1")
+    HIGH = D("1.5")
+    MEDIUM = D("1")
+    LOW = D("0.5")
 
 
-class IntegrityRequirements(BaseEnum):
+class IntegrityRequirement(BaseEnum):
     """
     Vector: IR
     """
-    NOT_DEFINED = 1
-    HIGH = 1.5
-    MEDIUM = 1
-    LOW = 0.5
+    NOT_DEFINED = D("1")
+    HIGH = D("1.5")
+    MEDIUM = D("1")
+    LOW = D("0.5")
 
 
-class AvailabilityRequirements(BaseEnum):
+class AvailabilityRequirement(BaseEnum):
     """
     Vector: AR
     """
-    NOT_DEFINED = 1
-    HIGH = 1.5
-    MEDIUM = 1
-    LOW = 0.5
+    NOT_DEFINED = D("1")
+    HIGH = D("1.5")
+    MEDIUM = D("1")
+    LOW = D("0.5")
 
 
-ModifiedAttackVector = AttackVector.extend("ModifiedAttackVector", {"NOT_DEFINED": 0.85}, "Vector: MAV")
+ModifiedAttackVector = AttackVector.extend("ModifiedAttackVector", {"NOT_DEFINED": None}, "Vector: MAV")
 
-ModifiedAttackComplexity = AttackComplexity.extend("ModifiedAttackComplexity", {"NOT_DEFINED": 0.77}, "Vector: MAC")
+ModifiedAttackComplexity = AttackComplexity.extend("ModifiedAttackComplexity", {"NOT_DEFINED": None}, "Vector: MAC")
 
-ModifiedPrivilegeRequired = PrivilegeRequired.extend("ModifiedPrivilegesRequired", {"NOT_DEFINED": 0.85}, "Vector: MPR")
+ModifiedPrivilegeRequired = PrivilegeRequired.extend("ModifiedPrivilegesRequired", {"NOT_DEFINED": None}, "Vector: MPR")
 
-ModifiedUserInteraction = UserInteraction.extend("ModifiedUserInteraction", {"NOT_DEFINED": 0.85}, "Vector: MUI")
+ModifiedUserInteraction = UserInteraction.extend("ModifiedUserInteraction", {"NOT_DEFINED": None}, "Vector: MUI")
 
-ModifiedScope = Scope.extend("ModifiedScope", {"NOT_DEFINED": Scope.UNCHANGED.value}, "Vector: MS")
+ModifiedScope = Scope.extend("ModifiedScope", {"NOT_DEFINED": None}, "Vector: MS")
 
-ModifiedConfidentiality = ConfidentialityImpact.extend("ModifiedConfidentiality", {"NOT_DEFINED": 1.0}, "Vector: MC")
+ModifiedConfidentialityImpact = ConfidentialityImpact.extend("ModifiedConfidentialityImpact", {"NOT_DEFINED": None}, "Vector: MC")
 
-ModifiedIntegrity = IntegrityImpact.extend("ModifiedIntegrity", {"NOT_DEFINED": 1.0}, "Vector: MI")
+ModifiedIntegrityImpact = IntegrityImpact.extend("ModifiedIntegrityImpact", {"NOT_DEFINED": None}, "Vector: MI")
 
-ModifiedAvailability = AvailabilityImpact.extend("ModifiedAvailability", {"NOT_DEFINED": 1.0}, "Vector: MA")
+ModifiedAvailabilityImpact = AvailabilityImpact.extend("ModifiedAvailabilityImpact", {"NOT_DEFINED": None}, "Vector: MA")
+
+
+OPTIONAL_VALUES = {
+    ModifiedAttackVector, ModifiedAttackComplexity, ModifiedPrivilegeRequired,
+    ModifiedUserInteraction, ModifiedScope, ModifiedConfidentialityImpact,
+    ModifiedIntegrityImpact, ModifiedAvailabilityImpact
+}

@@ -1,5 +1,2 @@
 from . import enums
-
-
-def calculate():
-    pass
+from .calculations import *

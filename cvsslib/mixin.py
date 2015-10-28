@@ -1,4 +1,5 @@
 from .utils import get_enums, run_calc
+from functools import partial
 
 
 def make_attribute_name(str):
@@ -53,8 +54,15 @@ def class_mixin(module, base=object):
     class CVSSMixin(base):
         def __init__(self, *args, **kwargs):
 
-            for thing, value in cvss_mixin_data(module).items():
+            mixin_data = cvss_mixin_data(module)
+
+            for thing, value in mixin_data.items():
                 setattr(self, thing, value)
+
+            # Horrible horrible hack
+            setattr(self, "calculate", partial(mixin_data["calculate"], self))
+
+            self._enums = mixin_data
 
             super().__init__(*args, **kwargs)
 

@@ -17,3 +17,4 @@ class CVSS3State(class_mixin(cvss3)):
 
 
 from .vector import parse_vector
+from .mixin import django_mixin, class_mixin

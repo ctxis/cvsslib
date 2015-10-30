@@ -1,5 +1,3 @@
-import inspect
-
 from cvsslib import cvss3, cvss2
 from cvsslib.utils import get_enums, run_calc
 
@@ -19,9 +17,30 @@ def detect_vector(vector):
 
 
 def to_vector(module, getter):
+    vectors = []
+
     for name, enum in get_enums(module):
-        value = getter(enum)
-        pass
+        enum_value = getter(enum)
+        enum_attr = enum(enum_value)
+        vector = enum_attr.get_options()["vector"]
+
+        default_vectors = {}
+        if hasattr(enum_attr, "_vectors"):
+            default_vectors = {name: vec for vec, name in enum_attr._vectors.value.items()}
+
+        if enum_attr.name == "NOT_DEFINED":
+            continue
+        elif enum_attr.name in default_vectors:
+            for key, v in default_vectors.items():
+                if key == enum_attr.name:
+                    value = v
+                    break
+        else:
+            value = enum_attr.name[0]
+
+        vectors.append("{0}:{1}".format(vector, value.upper()))
+
+    return "/".join(sorted(vectors))
 
 
 def calculate_vector(vector, module=None):
@@ -46,14 +65,9 @@ def parse_vector(vector, module=None):
     mandatory_keys, given_keys = set(), set()
 
     for name, enum in get_enums(module):
-        docstring = inspect.getdoc(enum)
-        lines = docstring.strip().split("\n")
-        options = {
-            line.split(":")[0].lower().strip(): line.split(":")[1].strip()
-            for line in lines
-            }
-
+        options = enum.get_options()
         vector_name = options["vector"]
+
         vector_map[vector_name] = enum
         if options.get("mandatory", "") == "yes":
             mandatory_keys.add(vector_name)

@@ -44,14 +44,11 @@ There are some powerful mixin functions if you need a class with CVSS members:
         do_something()
     
 
-It also supports Django models using a metaclass
+It also supports Django models:
 
-    from cvsslib import cvss2, django_mixin
-    from django.db import models
+    from cvsslib.contrib.django_model import CVSS2Model
     
-    metaclass = django_mixin(cvss2)
-    
-    class CVSSModel(models.Model, metaclass=metaclass)
+    class CVSSModel(CVSS2Model)
         pass
         
     # CVSSModel now has lots of DecimalFields you can use

@@ -1,4 +1,5 @@
 import enum
+import inspect
 
 
 class NotDefined(object):
@@ -14,6 +15,16 @@ def make_display_name(str):
 
 
 class BaseEnum(enum.Enum):
+    @classmethod
+    def get_options(cls):
+        docstring = inspect.getdoc(cls)
+        lines = docstring.strip().split("\n")
+        options = {
+            line.split(":")[0].lower().strip(): line.split(":")[1].strip()
+            for line in lines
+            }
+        return options
+
     @classmethod
     def members(self):
         return (

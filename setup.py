@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='cvsslib',
     version='0.1',
-    packages=['cvsslib', 'cvsslib.cvss2', 'cvsslib.cvss3'],
+    packages=['cvsslib', 'cvsslib.cvss2', 'cvsslib.cvss3', 'cvsslib.contrib'],
     url='',
     license='',
     author='Tom',

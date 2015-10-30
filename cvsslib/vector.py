@@ -46,8 +46,6 @@ def parse_vector(vector, module=None):
         vector_values[enum] = value_from_key
         given_keys.add(key)
 
-        #print("{0} = {1} ({2})".format(enum, value_from_key, key))
-
     required_diff = mandatory_keys.difference(given_keys)
 
     if required_diff:
@@ -55,8 +53,11 @@ def parse_vector(vector, module=None):
 
     def _getter(enum_type):
         if enum_type not in vector_values:
-            return enum_type.get_default()
-        return vector_values[enum_type]
+            ret = enum_type.get_default()
+        else:
+            ret = vector_values[enum_type]
+
+        return ret.value
 
     return run_calc(module.calculate, getter=_getter)
 

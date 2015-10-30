@@ -1,6 +1,6 @@
 import inspect
 from functools import partial
-from .base_enum import BaseEnum
+from .base_enum import BaseEnum, NotDefined
 
 
 def get_enums(obj, only_classes=True):
@@ -28,6 +28,12 @@ def run_calc(function, *args, getter=None, override=None, _parent_override=None,
         _parent_override.update(override)
         override = _parent_override
 
+    def argument_getter(*args, **kwargs):
+        res = getter(*args, **kwargs)
+        if isinstance(res, NotDefined):
+            return res.value
+        return res
+
     default_args = {
         "run_calculation": partial(run_calc, getter=getter, _parent_override=override),
         "get": getter
@@ -52,7 +58,7 @@ def run_calc(function, *args, getter=None, override=None, _parent_override=None,
         if override and annotated_type in override:
             value = override[annotated_type]
         else:
-            value = getter(annotated_type)
+            value = argument_getter(annotated_type)
 
         call_args.append(
             value

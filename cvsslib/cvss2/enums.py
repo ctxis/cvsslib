@@ -1,6 +1,5 @@
 from decimal import Decimal as D
-
-from cvsslib.base_enum import BaseEnum
+from cvsslib.base_enum import BaseEnum, NotDefined
 
 
 # Taken from https://www.first.org/cvss/v2/guide#i3.2.1
@@ -68,10 +67,10 @@ class Exploitability(BaseEnum):
     PROOF_OF_CONCEPT = D("0.9")
     FUNCTIONAL = D("0.95")
     HIGH = D("1")
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
 
     _vectors = {
-        "poc": PROOF_OF_CONCEPT
+        "poc": "PROOF_OF_CONCEPT"
     }
 
 
@@ -83,11 +82,11 @@ class RemediationLevel(BaseEnum):
     TEMPORARY_FIX = D("0.90")
     WORKAROUND = D("0.95")
     UNAVAILABLE = D("1")
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
 
     _vectors = {
-        "of": OFFICIAL_FIX,
-        "tf": TEMPORARY_FIX
+        "of": "OFFICIAL_FIX",
+        "tf": "TEMPORARY_FIX"
     }
 
 
@@ -98,11 +97,11 @@ class ReportConfidence(BaseEnum):
     UNCONFIRMED = D("0.9")
     UNCORROBORATED = D("0.95")
     CONFIRMED = D("1")
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
 
     _vectors = {
-        "uc": UNCONFIRMED,
-        "ur": UNCORROBORATED
+        "uc": "UNCONFIRMED",
+        "ur": "UNCORROBORATED"
     }
 
 
@@ -116,11 +115,11 @@ class CollateralDamagePotential(BaseEnum):
     LOW_MEDIUM = D("0.3")
     MEDIUM_HIGH = D("0.4")
     HIGH = D("0.5")
-    NOT_DEFINED = D("0")
+    NOT_DEFINED = NotDefined(D("0"))
 
     _vectors = {
-        "lm": LOW_MEDIUM,
-        "mh": MEDIUM_HIGH
+        "lm": "LOW_MEDIUM",
+        "mh": "MEDIUM_HIGH"
     }
 
 
@@ -132,7 +131,7 @@ class TargetDistribution(BaseEnum):
     LOW = D("0.25")
     MEDIUM = D("0.75")
     HIGH = D("1")
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
 
 
 class ConfidentialityRequirement(BaseEnum):
@@ -142,7 +141,7 @@ class ConfidentialityRequirement(BaseEnum):
     LOW = D("0.5")
     MEDIUM = D("1")
     HIGH = D("1.51")
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
 
 
 class IntegrityRequirement(BaseEnum):
@@ -152,7 +151,7 @@ class IntegrityRequirement(BaseEnum):
     LOW = D("0.5")
     MEDIUM = D("1")
     HIGH = D("1.51")
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
 
 
 class AvailabilityRequirement(BaseEnum):
@@ -162,4 +161,13 @@ class AvailabilityRequirement(BaseEnum):
     LOW = D("0.5")
     MEDIUM = D("1.0")
     HIGH = D("1.51")
-    NOT_DEFINED = D("1.0")
+    NOT_DEFINED = NotDefined(D("1.0"))
+
+
+ENVIRONMENTAL_METRICS = {
+    CollateralDamagePotential,
+    TargetDistribution,
+    ConfidentialityRequirement,
+    IntegrityRequirement,
+    AvailabilityRequirement
+}

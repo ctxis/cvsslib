@@ -1,6 +1,12 @@
 import enum
 
 
+class NotDefined(object):
+    def __init__(self, value=None):
+        self.value = value
+        self.name = "NOT_DEFINED"
+
+
 def make_display_name(str):
     return " ".join(
         s.capitalize() for s in str.lower().split("_")
@@ -33,7 +39,7 @@ class BaseEnum(enum.Enum):
 
         # Vectors is a way to override the keys given to a value. Used in CVSSv2
         if hasattr(cls, "_vectors") and key in cls._vectors.value:
-            return cls(cls._vectors.value[key])
+            return getattr(cls, cls._vectors.value[key])
 
         for name, value in cls.members():
             if name == "NOT_DEFINED":

@@ -1,4 +1,5 @@
 from .enums import *
+from cvsslib.base_enum import NotDefined
 
 
 def calculate_impact(conf: ConfidentialityImpact,
@@ -7,16 +8,16 @@ def calculate_impact(conf: ConfidentialityImpact,
     # Impact = 10.41*(1-(1-ConfImpact)*(1-IntegImpact)*(1-AvailImpact))
     return D("10.41") * \
            (1 -
-            (1 - conf.value) *
-            (1 - integ.value) *
-            (1 - avail.value))
+            (1 - conf) *
+            (1 - integ) *
+            (1 - avail))
 
 
 def calculate_exploitability(access: AccessVector,
                              complexity: AccessComplexity,
                              auth: Authentication):
     # Exploitability = 20* AccessVector*AccessComplexity*Authentication
-    return D("20") * access.value * complexity.value * auth.value
+    return D("20") * access * complexity * auth
 
 
 def calculate_base_score(run_calculation, impact_function):
@@ -36,7 +37,7 @@ def calculate_temporal_score(base_score,
                              exploit: Exploitability,
                              remediation: RemediationLevel,
                              confidence: ReportConfidence):
-    return round(base_score * exploit.value * remediation.value * confidence.value, 1)
+    return round(base_score * exploit * remediation * confidence, 1)
 
 
 # AdjustedImpact = min(10,10.41*(1-(1-ConfImpact*ConfReq)*(1-IntegImpact*IntegReq)*(1-AvailImpact*AvailReq)))
@@ -50,9 +51,9 @@ def calculate_adjusted_impact(conf_impact: ConfidentialityImpact,
         10,
         D("10.41") * (
             1 - (
-                (1 - conf_impact.value * conf_req.value) *
-                (1 - integ_impact.value * integ_req.value) *
-                (1 - avail_impact.value * avail_req.value)
+                (1 - conf_impact * conf_req) *
+                (1 - integ_impact * integ_req) *
+                (1 - avail_impact * avail_req)
             )
         )
     )
@@ -72,8 +73,8 @@ def calculate_environmental_score(run_calculation,
     return round(
         (adjusted_temporal +
          (10 - adjusted_temporal) *
-         collat_damage.value) *
-        target_dist.value, 1
+         collat_damage) *
+        target_dist, 1
     )
 
 
@@ -82,13 +83,16 @@ def calculate(run_calculation, get):
     # environmental score
     base_score = run_calculation(calculate_base_score, calculate_impact)
 
-    # ToDo: this doesn't work yet. NOT_DEFINED is the default but shares a value with others so
-    # it uses the other enum name instead of NOT_DEFINED
-    if all(e.value == e.NOT_DEFINED for e in {get(Exploitability), get(RemediationLevel), get(ReportConfidence)}):
+    temporal_metrics = {get(Exploitability), get(RemediationLevel), get(ReportConfidence)}
+    if all(isinstance(e, NotDefined) for e in temporal_metrics):
         temporal_score = None
     else:
-        temporal_score = run_calculation(calculate_temporal_score, base_score)
+        temporal_score = float(run_calculation(calculate_temporal_score, base_score))
 
-    environmental_score = run_calculation(calculate_environmental_score)
+    environment_metrics = {get(cls) for cls in ENVIRONMENTAL_METRICS}
+    if all(isinstance(e, NotDefined) for e in environment_metrics):
+        environmental_score = None
+    else:
+        environmental_score = float(run_calculation(calculate_environmental_score))
 
-    return float(base_score), float(temporal_score), float(environmental_score)
+    return float(base_score), temporal_score, environmental_score

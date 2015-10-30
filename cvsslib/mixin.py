@@ -1,5 +1,6 @@
-from .utils import get_enums, run_calc
 from functools import partial
+
+from .utils import get_enums, run_calc
 
 
 def make_attribute_name(str):
@@ -18,7 +19,6 @@ def make_attribute_name(str):
 
 
 def cvss_mixin_data(module, field_callback=None):
-
     returner = {}
     enum_dict = {}
 
@@ -53,7 +53,6 @@ def cvss_mixin_data(module, field_callback=None):
 def class_mixin(module, base=object):
     class CVSSMixin(base):
         def __init__(self, *args, **kwargs):
-
             mixin_data = cvss_mixin_data(module)
 
             for thing, value in mixin_data.items():
@@ -99,4 +98,3 @@ def django_mixin(module, base=None):
             return returner
 
     return CVSSMetaclass
-

@@ -1,5 +1,6 @@
-from cvsslib.base_enum import BaseEnum
 from decimal import Decimal as D
+
+from cvsslib.base_enum import BaseEnum, NotDefined
 
 
 # Taken from https://www.first.org/cvss/specification-document#i8.4
@@ -147,22 +148,28 @@ class AvailabilityRequirement(BaseEnum):
     LOW = D("0.5")
 
 
-ModifiedAttackVector = AttackVector.extend("ModifiedAttackVector", {"NOT_DEFINED": None}, "Vector: MAV")
+ModifiedAttackVector = AttackVector.extend("ModifiedAttackVector",
+                                           {"NOT_DEFINED": NotDefined()},
+                                           "Vector: MAV")
 
-ModifiedAttackComplexity = AttackComplexity.extend("ModifiedAttackComplexity", {"NOT_DEFINED": None}, "Vector: MAC")
+ModifiedAttackComplexity = AttackComplexity.extend("ModifiedAttackComplexity", {"NOT_DEFINED": NotDefined()},
+                                                   "Vector: MAC")
 
-ModifiedPrivilegeRequired = PrivilegeRequired.extend("ModifiedPrivilegesRequired", {"NOT_DEFINED": None}, "Vector: MPR")
+ModifiedPrivilegeRequired = PrivilegeRequired.extend("ModifiedPrivilegesRequired", {"NOT_DEFINED": NotDefined()},
+                                                     "Vector: MPR")
 
-ModifiedUserInteraction = UserInteraction.extend("ModifiedUserInteraction", {"NOT_DEFINED": None}, "Vector: MUI")
+ModifiedUserInteraction = UserInteraction.extend("ModifiedUserInteraction", {"NOT_DEFINED": NotDefined()},
+                                                 "Vector: MUI")
 
-ModifiedScope = Scope.extend("ModifiedScope", {"NOT_DEFINED": None}, "Vector: MS")
+ModifiedScope = Scope.extend("ModifiedScope", {"NOT_DEFINED": NotDefined()}, "Vector: MS")
 
-ModifiedConfidentialityImpact = ConfidentialityImpact.extend("ModifiedConfidentialityImpact", {"NOT_DEFINED": None}, "Vector: MC")
+ModifiedConfidentialityImpact = ConfidentialityImpact.extend("ModifiedConfidentialityImpact",
+                                                             {"NOT_DEFINED": NotDefined()}, "Vector: MC")
 
-ModifiedIntegrityImpact = IntegrityImpact.extend("ModifiedIntegrityImpact", {"NOT_DEFINED": None}, "Vector: MI")
+ModifiedIntegrityImpact = IntegrityImpact.extend("ModifiedIntegrityImpact", {"NOT_DEFINED": NotDefined()}, "Vector: MI")
 
-ModifiedAvailabilityImpact = AvailabilityImpact.extend("ModifiedAvailabilityImpact", {"NOT_DEFINED": None}, "Vector: MA")
-
+ModifiedAvailabilityImpact = AvailabilityImpact.extend("ModifiedAvailabilityImpact", {"NOT_DEFINED": NotDefined()},
+                                                       "Vector: MA")
 
 OPTIONAL_VALUES = {
     ModifiedAttackVector, ModifiedAttackComplexity, ModifiedPrivilegeRequired,

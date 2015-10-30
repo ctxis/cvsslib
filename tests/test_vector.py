@@ -41,6 +41,28 @@ v2_test_vectors = [
     ("AV:N/AC:M/Au:M/C:C/I:N/A:P/E:ND/RL:W/RC:UC/CDP:LM/TD:M/CR:L/IR:L/AR:L", (6.4, 5.5, 4)),
     ("AV:L/AC:L/Au:S/C:P/I:P/A:P/E:U/RL:ND/RC:C/CDP:LM/TD:L/CR:ND/IR:H/AR:M", (4.3, 3.7, 1.5)),
     ("AV:A/AC:M/Au:S/C:C/I:P/A:C", (7, None, None)),
+
+    # From the example document
+    ("AV:N/AC:M/Au:N/C:N/I:P/A:N", (4.3, None, None)),
+    ("AV:N/AC:L/Au:S/C:P/I:P/A:N", (5.5, None, None)),
+    ("AV:N/AC:M/Au:N/C:P/I:N/A:N", (4.3, None, None)),
+    ("AV:N/AC:L/Au:S/C:C/I:C/A:C", (9, None, None)),
+    ("AV:L/AC:L/Au:N/C:P/I:P/A:P", (4.6, None, None)),
+    ("AV:N/AC:M/Au:S/C:C/I:C/A:C", (8.5, None, None)),
+    ("AV:N/AC:M/Au:N/C:P/I:P/A:P", (6.8, None, None)),
+    ("AV:N/AC:L/Au:N/C:P/I:N/A:N", (5, None, None)),
+    ("AV:N/AC:L/Au:N/C:C/I:C/A:C", (10, None, None)),
+    ("AV:N/AC:L/Au:N/C:N/I:P/A:N", (5, None, None)),
+    ("AV:L/AC:M/Au:N/C:C/I:C/A:C", (6.9, None, None)),
+    ("AV:N/AC:L/Au:N/C:P/I:N/A:N", (5, None, None)),
+    ("AV:N/AC:L/Au:N/C:N/I:P/A:N", (5, None, None)),
+    ("AV:A/AC:L/Au:N/C:N/I:C/A:N", (6.1, None, None)),
+    ("AV:N/AC:M/Au:N/C:N/I:P/A:N", (4.3, None, None)),
+    ("AV:N/AC:M/Au:N/C:C/I:C/A:C", (9.3, None, None)),
+    ("AV:A/AC:L/Au:N/C:C/I:C/A:C", (8.3, None, None)),
+    ("AV:L/AC:L/Au:N/C:N/I:C/A:N", (4.9, None, None)),
+    ("AV:N/AC:M/Au:N/C:P/I:P/A:P", (6.8, None, None)),
+    ("AV:N/AC:L/Au:N/C:C/I:C/A:C", (10, None, None))
 ]
 
 

@@ -59,3 +59,10 @@ It also supports Django models using a metaclass
     x.save()
     x.exploitability
  
+ And there is a command line tool available:
+ 
+    > cvss CVSS:3.0/AV:L/AC:H/PR:H/UI:N/S:C/C:N/I:H/A:N/E:P/RL:U/RC:U/CR:H/IR:L/AR:H/MAV:L/MUI:R/MS:C/MC:N/MI:L/MA:N
+    Base Score:     5.3
+    Temporal:       4.6
+    Environment:    1.3
+ 

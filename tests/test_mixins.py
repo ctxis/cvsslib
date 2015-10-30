@@ -13,3 +13,6 @@ def test_cvss_class_mixin():
         enum_classes_in_class = set([e[1].__class__ for e in get_enums(cls, only_classes=False)])
 
         assert enum_classes_in_class == enum_classes_in_module
+
+        assert cls.to_vector()
+

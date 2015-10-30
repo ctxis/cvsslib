@@ -1,4 +1,4 @@
-from cvsslib.vector import parse_vector
+from cvsslib.vector import calculate_vector
 from cvsslib import cvss3, cvss2
 
 v3_test_vectors = [
@@ -68,13 +68,13 @@ v2_test_vectors = [
 
 def test_v3_vector():
     for vector, results in v3_test_vectors:
-        score = parse_vector(vector, cvss3)
+        score = calculate_vector(vector, cvss3)
 
-        assert results == score
+        assert results == score, "Vector {0} failed".format(vector)
 
 
 def test_v2_vector():
     for vector, results in v2_test_vectors:
-        score = parse_vector(vector, cvss2)
+        score = calculate_vector(vector, cvss2)
 
-        assert results == score
+        assert results == score, "Vector {0} failed".format(vector)

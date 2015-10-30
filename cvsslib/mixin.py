@@ -1,6 +1,7 @@
 from functools import partial
 
 from .utils import get_enums, run_calc
+from .vector import to_vector
 
 
 def make_attribute_name(str):
@@ -38,14 +39,21 @@ def cvss_mixin_data(module, field_callback=None):
     if not calculate_func:
         raise RuntimeError("Cannot find 'calculate' method in {module}".format(module=module))
 
+    def _getter(inst, enum_type):
+        member_name = enum_dict[enum_type]
+        return getattr(inst, member_name)
+
+    def _from_vector(self):
+        vectors = self.to_vector()
+
     # Make the 'calculate' method
     def _calculate(self):
-        def _getter(enum_type):
-            member_name = enum_dict[enum_type]
-            return getattr(self, member_name)
+        return run_calc(calculate_func, getter=partial(_getter, self))
 
-        return run_calc(calculate_func, getter=_getter)
+    def _to_vector(self):
+        return to_vector(module, partial(_getter, self))
 
+    returner["to_vector"] = _to_vector
     returner["calculate"] = _calculate
     return returner
 
@@ -60,7 +68,7 @@ def class_mixin(module, base=object):
 
             # Horrible horrible hack
             setattr(self, "calculate", partial(mixin_data["calculate"], self))
-
+            setattr(self, "to_vector", partial(mixin_data["to_vector"], self))
             self._enums = mixin_data
 
             super().__init__(*args, **kwargs)

@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name='cvsslib',
@@ -8,5 +8,8 @@ setup(
     license='',
     author='Tom',
     author_email='tom.forbes@contextis.co.uk',
-    description='CVSS 2/3 utilities'
+    description='CVSS 2/3 utilities',
+    entry_points={
+        'console_scripts': ['cvss=cvsslib.command:main'],
+    }
 )

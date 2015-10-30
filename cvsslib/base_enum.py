@@ -48,7 +48,7 @@ class BaseEnum(enum.Enum):
             if name[0].lower() == key:
                 return value
 
-        raise RuntimeError("Unknown vector key '{0}' for {1}".format(key, cls))
+        raise RuntimeError("Unknown vector key '{0}' for {1}".format(key, cls.__name__))
 
     @classmethod
     def choices(cls):

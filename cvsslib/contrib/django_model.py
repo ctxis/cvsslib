@@ -1,5 +1,6 @@
 from cvsslib.mixin import cvss_mixin_data
 from cvsslib import cvss2, cvss3
+from cvsslib.base_enum import NotDefined
 from django.db import models
 from django.db.models.base import ModelBase
 
@@ -10,12 +11,17 @@ def django_mixin(module, base=ModelBase):
 
     def field_callback(name, enum_cls):
         choices = enum_cls.choices()
-        nullable = any(o.value is None for o in enum_cls)
+        nullable = any((isinstance(o, NotDefined) and o.value.value is None) or
+                       o.value is None for o in enum_cls)
+
+        value = enum_cls.get_default().value
+        if isinstance(value, NotDefined):
+            value = value.value
 
         return models.DecimalField(max_digits=7,
                                    decimal_places=4,
                                    choices=choices,
-                                   default=enum_cls.get_default(),
+                                   default=value,
                                    null=nullable)
 
     class CVSSMetaclass(base):

@@ -63,7 +63,8 @@ class BaseEnum(enum.Enum):
 
     @classmethod
     def choices(cls):
-        return [(value.value, make_display_name(name)) for name, value in cls.members()]
+        return [(value.value if not isinstance(value.value, NotDefined) else value.value.value,
+                 make_display_name(name)) for name, value in cls.members()]
 
     @classmethod
     def extend(cls, name, extra, doc=""):

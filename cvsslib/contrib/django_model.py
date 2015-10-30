@@ -23,7 +23,7 @@ def django_mixin(module, base=ModelBase):
         def __prepare__(mcs, *args, **kwargs):
             returner = super().__prepare__(*args, **kwargs)
 
-            mixin_data = cvss_mixin_data(module, field_callback)
+            mixin_data, _ = cvss_mixin_data(module, field_callback)
             returner.update(mixin_data)
 
             return returner

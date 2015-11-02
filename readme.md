@@ -1,4 +1,4 @@
-# CVSSlib
+# CVSSlib [![Build Status](https://travis-ci.org/ctxis/cvsslib.svg?branch=master)](https://travis-ci.org/ctxis/cvsslib)
 
 An (over-engineered) library that supports calculating values from CVSS2 and CVSS3 vectors.
 

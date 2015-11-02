@@ -20,17 +20,16 @@ def to_vector(module, getter):
     vectors = []
 
     for name, enum in get_enums(module):
-        enum_value = getter(enum)
-        enum_attr = enum(enum_value)
+        enum_attr = getter(enum)
         vector = enum_attr.get_options()["vector"]
 
         default_vectors = {}
-        if hasattr(enum_attr, "_vectors"):
-            default_vectors = {name: vec for vec, name in enum_attr._vectors.value.items()}
+        if hasattr(enum, "_vectors"):
+            default_vectors = {name: vec for vec, name in enum._vectors.value.items()}
 
         if enum_attr.name == "NOT_DEFINED":
             continue
-        elif enum_attr.name in default_vectors:
+        elif enum_attr.name in default_vectors.keys():
             for key, v in default_vectors.items():
                 if key == enum_attr.name:
                     value = v
@@ -52,7 +51,7 @@ def calculate_vector(vector, module=None):
         else:
             ret = vector_values[enum_type]
 
-        return ret.value
+        return ret
 
     return run_calc(module.calculate, getter=_getter)
 

@@ -90,7 +90,7 @@ class ExploitCodeMaturity(BaseEnum):
     """
     Vector: E
     """
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
     HIGH = D("1")
     FUNCTIONAL = D("0.97")
     PROOF_OF_CONCEPT = D("0.94")
@@ -101,7 +101,7 @@ class RemediationLevel(BaseEnum):
     """
     Vector: RL
     """
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
     UNAVAILABLE = D("1")
     WORKAROUND = D("0.97")
     TEMPORARY_FIX = D("0.96")
@@ -112,7 +112,7 @@ class ReportConfidence(BaseEnum):
     """
     Vector: RC
     """
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
     CONFIRMED = D("1")
     REASONABLE = D("0.96")
     UNKNOWN = D("0.92")
@@ -122,7 +122,7 @@ class ConfidentialityRequirement(BaseEnum):
     """
     Vector: CR
     """
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
     HIGH = D("1.5")
     MEDIUM = D("1")
     LOW = D("0.5")
@@ -132,7 +132,7 @@ class IntegrityRequirement(BaseEnum):
     """
     Vector: IR
     """
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
     HIGH = D("1.5")
     MEDIUM = D("1")
     LOW = D("0.5")
@@ -142,7 +142,7 @@ class AvailabilityRequirement(BaseEnum):
     """
     Vector: AR
     """
-    NOT_DEFINED = D("1")
+    NOT_DEFINED = NotDefined(D("1"))
     HIGH = D("1.5")
     MEDIUM = D("1")
     LOW = D("0.5")

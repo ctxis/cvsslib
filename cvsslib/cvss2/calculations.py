@@ -84,13 +84,13 @@ def calculate(run_calculation, get):
     base_score = run_calculation(calculate_base_score, calculate_impact)
 
     temporal_metrics = {get(Exploitability), get(RemediationLevel), get(ReportConfidence)}
-    if all(isinstance(e, NotDefined) for e in temporal_metrics):
+    if all(isinstance(e.value, NotDefined) for e in temporal_metrics):
         temporal_score = None
     else:
         temporal_score = float(run_calculation(calculate_temporal_score, base_score))
 
     environment_metrics = {get(cls) for cls in ENVIRONMENTAL_METRICS}
-    if all(isinstance(e, NotDefined) for e in environment_metrics):
+    if all(isinstance(e.value, NotDefined) for e in environment_metrics):
         environmental_score = None
     else:
         environmental_score = float(run_calculation(calculate_environmental_score))

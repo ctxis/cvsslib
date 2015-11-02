@@ -2,6 +2,7 @@ from functools import partial
 
 from .utils import get_enums, run_calc
 from .vector import to_vector
+import operator
 
 
 def make_attribute_name(str):
@@ -45,19 +46,29 @@ def class_mixin(module, base=object):
 
     class CVSSMixin(base):
         def __init__(self, *args, **kwargs):
+            # enum_map maps an enum class to it's attribute name.
             mixin_data, enum_map = cvss_mixin_data(module)
 
             for thing, value in mixin_data.items():
                 setattr(self, thing, value)
 
-            self._enums = mixin_data
+            self._enums = list(mixin_data.keys())
             self._enum_map = enum_map
 
             super().__init__(*args, **kwargs)
 
+        def debug(self):
+            result = []
+
+            ordered_enums = sorted(get_enums(self, only_classes=False), key=operator.itemgetter(0))
+            for name, value in ordered_enums:
+                result.append("{name} = {value}".format(name=name, value=value))
+
+            return result
+
         def _getter(self, enum_type):
             member_name = self._enum_map[enum_type]
-            return getattr(self, member_name).value
+            return getattr(self, member_name)
 
         # Make the 'calculate' method
         def calculate(self):

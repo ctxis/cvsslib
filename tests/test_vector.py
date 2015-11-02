@@ -114,6 +114,10 @@ def test_cvss_class_mixin():
                 parse_vector(new_vector, module)
             )
 
+            assert vector == new_vector
+
+            assert new_instance.debug() == instance.debug()
+
             assert instance.calculate() == expected
             assert new_instance.calculate() == expected
 

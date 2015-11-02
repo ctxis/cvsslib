@@ -18,7 +18,8 @@ def get_enums(obj, only_classes=True):
             yield name, obj
 
 
-def run_calc(function, *args, getter=None, override=None, _parent_override=None, **kwargs):
+def run_calc(function, *args, getter=None,
+             override=None, _parent_override=None, **kwargs):
     if getter is None:
         raise RuntimeError("Must supply a getter argument!")
 
@@ -30,9 +31,9 @@ def run_calc(function, *args, getter=None, override=None, _parent_override=None,
 
     def argument_getter(*args, **kwargs):
         res = getter(*args, **kwargs)
-        if isinstance(res, NotDefined):
-            return res.value
-        return res
+        if isinstance(res.value, NotDefined):
+            return res.value.value
+        return res.value
 
     default_args = {
         "run_calculation": partial(run_calc, getter=getter, _parent_override=override),

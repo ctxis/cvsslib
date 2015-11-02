@@ -136,11 +136,11 @@ def calculate(run_calculation, get):
     for optional_enum in OPTIONAL_VALUES:
         set_value = get(optional_enum)
 
-        if isinstance(set_value, NotDefined):
+        if isinstance(set_value.value, NotDefined):
             # Override the value with the non-optional one
             parent_enum_class = optional_enum._parent
             parent_enum_value = get(parent_enum_class)
-            override[optional_enum] = parent_enum_value
+            override[optional_enum] = parent_enum_value.value
 
     environment_score = run_calculation(calculate_environmental_score, override=override)
 

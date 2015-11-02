@@ -51,7 +51,7 @@ def to_vector(module, getter):
     return res
 
 
-def calculate_vector(vector, module=None):
+def calculate_vector(vector, module):
     vector_values = parse_vector(vector, module)
 
     def _getter(enum_type):

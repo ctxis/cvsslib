@@ -1,4 +1,4 @@
-from cvsslib.vector import parse_vector, detect_vector, VectorError
+from cvsslib.vector import detect_vector, calculate_vector, VectorError
 from cvsslib import cvss2, cvss3
 import argparse
 
@@ -13,9 +13,11 @@ def main():
 
     if args.version is not None:
         module = {2: cvss2, 3: cvss3}[args.version]
+    else:
+        module = detect_vector(args.vector)
 
     try:
-        results = parse_vector(args.vector, module)
+        results = calculate_vector(args.vector, module)
     except VectorError as e:
         print("Error parsing vector: {0}".format(e.message))
     else:

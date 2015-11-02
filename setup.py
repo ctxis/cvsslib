@@ -1,7 +1,11 @@
 from setuptools import setup
+import sys
 
-with open("requirements.txt", "r") as fd:
-    requirements = [line.strip() for line in fd.readlines()]
+requirements = []
+
+# Enum34 fails in Python 3.5 (and not needed in 3.4), so skip it.
+if sys.version_info < (3, 4):
+    requirements.append("enum34")
 
 setup(
     name='cvsslib',

@@ -3,7 +3,8 @@ import pytest
 from cvsslib import cvss2, cvss3, parse_vector
 from cvsslib.vector import sorted_vector
 from .cvss_scores import v3_test_vectors, v2_test_vectors
-from django_app.app.models import v2Model, v3Model
+
+from django_app.app.models import v2Model, v3Model # Ensure you are running py.test in the tests/ directory if this fails.
 
 
 @pytest.mark.django_db

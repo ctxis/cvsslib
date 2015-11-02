@@ -43,8 +43,10 @@ class BaseEnum(enum.Enum):
 
     def get_value_key(self):
         default_vectors = {}
-        if hasattr(self, "_vectors"):
-            default_vectors = {name: vec for vec, name in self._vectors.value.items()}
+
+        cls = self.__class__
+        if hasattr(cls, "_vectors"):
+            default_vectors = {name: vec for vec, name in cls._vectors.value.items()}
 
         if self.name == "NOT_DEFINED":
             return None
@@ -58,8 +60,10 @@ class BaseEnum(enum.Enum):
         return value.upper()
 
     @classmethod
-    def get_value_from_vector(cls, key):
+    def get_value_from_vector_key(cls, key):
         key = key.lower()
+
+
 
         if key in {"x", "nd"} and hasattr(cls, "NOT_DEFINED"):
             return cls.NOT_DEFINED

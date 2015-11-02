@@ -96,7 +96,7 @@ def parse_vector(vector, module=None):
 
         enum = vector_map[key]
         try:
-            value_from_key = enum.get_value_from_vector(value)
+            value_from_key = enum.get_value_from_vector_key(value)
         except RuntimeError as e:
             raise VectorError(*e.args)
         vector_values[enum] = value_from_key

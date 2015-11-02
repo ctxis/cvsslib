@@ -4,12 +4,11 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
-  # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
-  # maintainers to fix their pypy-dev package.
   - "pypy3"
 # command to install dependencies
 install:
-  - pip install --upgrade pip wheel pytest django django-enumfields pytest-pythonpath pytest-django
+  - pip install --upgrade pip wheel
+  - pip install -r test_requirements.txt
   - pip install .
 # command to run tests
 script: cd tests && py.test . -vv

@@ -1,0 +1,5 @@
+pytest
+django
+django-enumfields
+pytest-pythonpath
+pytest-django

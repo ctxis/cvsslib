@@ -63,8 +63,6 @@ class BaseEnum(enum.Enum):
     def get_value_from_vector_key(cls, key):
         key = key.lower()
 
-
-
         if key in {"x", "nd"} and hasattr(cls, "NOT_DEFINED"):
             return cls.NOT_DEFINED
 

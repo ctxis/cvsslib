@@ -83,9 +83,14 @@ def class_mixin(module, base=object):
             for thing, value in mixin_data.items():
                 setattr(self, thing, value)
 
-            self._enums = list(mixin_data.keys())
-            self._enum_map = enum_map
-
             super().__init__(*args, **kwargs)
+
+        @property
+        def enums(self):
+            return get_enums(self, only_classes=False)
+
+        @property
+        def enums_map(self):
+            return enum_map
 
     return CVSSMixin

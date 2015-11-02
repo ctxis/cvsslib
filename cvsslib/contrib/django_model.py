@@ -1,14 +1,19 @@
-from enumfields.fields import EnumFieldMixin  # Requires the 'django-enumfields' package
-
-from cvsslib.mixin import cvss_mixin_data
-from cvsslib import cvss2, cvss3
-from cvsslib.base_enum import NotDefined
-from django.db import models
 from django.db.models.base import ModelBase
 
+from enumfields import EnumField
 
-class DecimalEnumField(EnumFieldMixin, models.DecimalField):
-    pass
+from cvsslib.mixin import cvss_mixin_data, utils_mixin
+from cvsslib.base_enum import NotDefined
+
+
+class KeyedEnumField(EnumField):
+    def get_prep_value(self, value):
+        return value.name
+
+    def to_python(self, value):
+        if isinstance(value, str):
+            return getattr(self.enum, value)
+        return super().to_python(value)
 
 
 def django_mixin(module, base=ModelBase):
@@ -20,35 +25,26 @@ def django_mixin(module, base=ModelBase):
         nullable = any((isinstance(o, NotDefined) and o.value.value is None) or
                        o.value is None for o in enum_cls)
 
-        value = enum_cls.get_default().value
-        if isinstance(value, NotDefined):
-            value = value.value
+        default = enum_cls.get_default()
 
-        return DecimalEnumField(enum_cls,
-                                max_digits=7,
-                                decimal_places=4,
-                                choices=choices,
-                                default=value,
-                                null=nullable)
+        return KeyedEnumField(enum_cls,
+                              choices=choices,
+                              default=default,
+                              null=nullable)
+
+    mixin_data, enum_map = cvss_mixin_data(module, field_callback)
+    Utils = utils_mixin(module, enum_map)
 
     class CVSSMetaclass(base):
+        def __new__(cls, name, bases, attrs):
+            bases = (Utils,) + bases
+            return super().__new__(cls, name, bases, attrs)
+
         @classmethod
         def __prepare__(mcs, *args, **kwargs):
             returner = super().__prepare__(*args, **kwargs)
-
-            mixin_data, _ = cvss_mixin_data(module, field_callback)
             returner.update(mixin_data)
 
             return returner
 
     return CVSSMetaclass
-
-
-class CVSS2Model(models.Model, metaclass=django_mixin(cvss2)):
-    class Meta:
-        abstract = True
-
-
-class CVSS3Model(models.Model, metaclass=django_mixin(cvss3)):
-    class Meta:
-        abstract = True

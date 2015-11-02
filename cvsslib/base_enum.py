@@ -41,6 +41,22 @@ class BaseEnum(enum.Enum):
             default = cls(min(value.value for name, value in cls.members()))
         return default
 
+    def get_value_key(self):
+        default_vectors = {}
+        if hasattr(self, "_vectors"):
+            default_vectors = {name: vec for vec, name in self._vectors.value.items()}
+
+        if self.name == "NOT_DEFINED":
+            return None
+        elif self.name in default_vectors.keys():
+            for key, v in default_vectors.items():
+                if key == self.name:
+                    return v.upper()
+        else:
+            value = self.name[0]
+
+        return value.upper()
+
     @classmethod
     def get_value_from_vector(cls, key):
         key = key.lower()

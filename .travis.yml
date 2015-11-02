@@ -9,7 +9,7 @@ python:
   - "pypy3"
 # command to install dependencies
 install:
-  - pip install --upgrade pip wheel pytest
+  - pip install --upgrade pip wheel pytest django django-enumfields pytest-pythonpath pytest-django
   - pip install .
 # command to run tests
-script: py.test . -vv
+script: cd tests && py.test . -vv

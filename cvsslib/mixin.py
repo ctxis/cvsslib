@@ -38,25 +38,13 @@ def cvss_mixin_data(module, field_callback=None):
     return returner, enum_dict
 
 
-def class_mixin(module, base=object):
+def utils_mixin(module, enum_map):
     calculate_func = getattr(module, "calculate", None)
 
     if not calculate_func:
         raise RuntimeError("Cannot find 'calculate' method in {module}".format(module=module))
 
-    class CVSSMixin(base):
-        def __init__(self, *args, **kwargs):
-            # enum_map maps an enum class to it's attribute name.
-            mixin_data, enum_map = cvss_mixin_data(module)
-
-            for thing, value in mixin_data.items():
-                setattr(self, thing, value)
-
-            self._enums = list(mixin_data.keys())
-            self._enum_map = enum_map
-
-            super().__init__(*args, **kwargs)
-
+    class CVSSUtilsMixin(object):
         def debug(self):
             result = []
 
@@ -67,7 +55,7 @@ def class_mixin(module, base=object):
             return result
 
         def _getter(self, enum_type):
-            member_name = self._enum_map[enum_type]
+            member_name = enum_map[enum_type]
             return getattr(self, member_name)
 
         # Make the 'calculate' method
@@ -79,7 +67,25 @@ def class_mixin(module, base=object):
 
         def from_vector(self, vector_result):
             for cls, value in vector_result.items():
-                attr_name = self._enum_map[cls]
+                attr_name = enum_map[cls]
                 setattr(self, attr_name, value)
+
+    return CVSSUtilsMixin
+
+
+def class_mixin(module, base=object):
+    mixin_data, enum_map = cvss_mixin_data(module)
+    Utils = utils_mixin(module, enum_map)
+
+    class CVSSMixin(Utils, base):
+        def __init__(self, *args, **kwargs):
+            # enum_map maps an enum class to it's attribute name.
+            for thing, value in mixin_data.items():
+                setattr(self, thing, value)
+
+            self._enums = list(mixin_data.keys())
+            self._enum_map = enum_map
+
+            super().__init__(*args, **kwargs)
 
     return CVSSMixin

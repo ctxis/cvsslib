@@ -16,6 +16,20 @@ def detect_vector(vector):
     return module
 
 
+def sorted_vector(vector):
+    replaced = False
+    if vector.startswith("CVSS:3.0/"):
+        vector = vector.replace("CVSS:3.0/", "")
+        replaced = True
+
+    vector = "/".join(sorted(vector.split("/")))
+
+    if replaced:
+        vector = "CVSS:3.0/" + vector
+
+    return vector
+
+
 def to_vector(module, getter):
     vectors = []
 
@@ -23,23 +37,18 @@ def to_vector(module, getter):
         enum_attr = getter(enum)
         vector = enum_attr.get_options()["vector"]
 
-        default_vectors = {}
-        if hasattr(enum, "_vectors"):
-            default_vectors = {name: vec for vec, name in enum._vectors.value.items()}
+        key = enum_attr.get_value_key()
 
-        if enum_attr.name == "NOT_DEFINED":
+        if key is None:
             continue
-        elif enum_attr.name in default_vectors.keys():
-            for key, v in default_vectors.items():
-                if key == enum_attr.name:
-                    value = v
-                    break
-        else:
-            value = enum_attr.name[0]
 
-        vectors.append("{0}:{1}".format(vector, value.upper()))
+        vectors.append("{0}:{1}".format(vector, key))
 
-    return "/".join(sorted(vectors))
+    res = "/".join(sorted(vectors))
+    if module is cvss3:
+        res = "CVSS:3.0/" + res
+
+    return res
 
 
 def calculate_vector(vector, module=None):

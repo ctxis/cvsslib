@@ -1,8 +1,14 @@
+from enumfields.fields import EnumFieldMixin  # Requires the 'django-enumfields' package
+
 from cvsslib.mixin import cvss_mixin_data
 from cvsslib import cvss2, cvss3
 from cvsslib.base_enum import NotDefined
 from django.db import models
 from django.db.models.base import ModelBase
+
+
+class DecimalEnumField(EnumFieldMixin, models.DecimalField):
+    pass
 
 
 def django_mixin(module, base=ModelBase):
@@ -18,11 +24,12 @@ def django_mixin(module, base=ModelBase):
         if isinstance(value, NotDefined):
             value = value.value
 
-        return models.DecimalField(max_digits=7,
-                                   decimal_places=4,
-                                   choices=choices,
-                                   default=value,
-                                   null=nullable)
+        return DecimalEnumField(enum_cls,
+                                max_digits=7,
+                                decimal_places=4,
+                                choices=choices,
+                                default=value,
+                                null=nullable)
 
     class CVSSMetaclass(base):
         @classmethod

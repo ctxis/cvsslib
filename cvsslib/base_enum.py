@@ -93,6 +93,7 @@ class BaseEnum(enum.Enum):
         )
         new_cls._parent = cls
         new_cls.__doc__ = doc
+        new_cls.__module__ = cls.__module__
         return new_cls
 
     @classmethod

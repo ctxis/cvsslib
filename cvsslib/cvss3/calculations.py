@@ -23,7 +23,7 @@ def calculate_exploitability_sub_score(attack_vector: AttackVector,
 
 def calculate_modified_exploitability_sub_score(vector: ModifiedAttackVector,
                                                 complexity: ModifiedAttackComplexity,
-                                                privilege: ModifiedPrivilegeRequired,
+                                                privilege: ModifiedPrivilegesRequired,
                                                 interaction: ModifiedUserInteraction):
     return EXPLOITABILITY_COEFFECIENT * vector * complexity * privilege * interaction
 
@@ -100,7 +100,7 @@ def calculate_environmental_score(run_calculation,
                                   exploit_code: ExploitCodeMaturity,
                                   remediation: RemediationLevel,
                                   confidence: ReportConfidence,
-                                  privilege: ModifiedPrivilegeRequired):
+                                  privilege: ModifiedPrivilegesRequired):
 
     modified_impact_sub_score = run_calculation(calculate_modified_impact_sub_score)
 
@@ -109,11 +109,11 @@ def calculate_environmental_score(run_calculation,
 
     if modified_scope == ModifiedScope.CHANGED.value:
         # Ok, so the privilege enum needs slightly different values depending on the scope. God damn.
-        modified_privilege = ModifiedPrivilegeRequired.extend("ModifiedPrivilegeRequired", {"LOW": D("0.68"), "HIGH": D("0.50")})
-        privilege = getattr(modified_privilege, ModifiedPrivilegeRequired(privilege).name).value
+        modified_privilege = ModifiedPrivilegesRequired.extend("ModifiedPrivilegeRequired", {"LOW": D("0.68"), "HIGH": D("0.50")})
+        privilege = getattr(modified_privilege, ModifiedPrivilegesRequired(privilege).name).value
 
     modified_exploitability_sub_score = run_calculation(calculate_modified_exploitability_sub_score,
-                                                        override={ModifiedPrivilegeRequired: privilege})
+                                                        override={ModifiedPrivilegesRequired: privilege})
 
     if modified_scope == ModifiedScope.UNCHANGED.value:
         return roundup(

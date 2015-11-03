@@ -155,7 +155,7 @@ ModifiedAttackVector = AttackVector.extend("ModifiedAttackVector",
 ModifiedAttackComplexity = AttackComplexity.extend("ModifiedAttackComplexity", {"NOT_DEFINED": NotDefined()},
                                                    "Vector: MAC")
 
-ModifiedPrivilegeRequired = PrivilegeRequired.extend("ModifiedPrivilegesRequired", {"NOT_DEFINED": NotDefined()},
+ModifiedPrivilegesRequired = PrivilegeRequired.extend("ModifiedPrivilegesRequired", {"NOT_DEFINED": NotDefined()},
                                                      "Vector: MPR")
 
 ModifiedUserInteraction = UserInteraction.extend("ModifiedUserInteraction", {"NOT_DEFINED": NotDefined()},
@@ -172,7 +172,7 @@ ModifiedAvailabilityImpact = AvailabilityImpact.extend("ModifiedAvailabilityImpa
                                                        "Vector: MA")
 
 OPTIONAL_VALUES = {
-    ModifiedAttackVector, ModifiedAttackComplexity, ModifiedPrivilegeRequired,
+    ModifiedAttackVector, ModifiedAttackComplexity, ModifiedPrivilegesRequired,
     ModifiedUserInteraction, ModifiedScope, ModifiedConfidentialityImpact,
     ModifiedIntegrityImpact, ModifiedAvailabilityImpact
 }

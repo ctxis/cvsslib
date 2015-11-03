@@ -25,11 +25,14 @@ def django_mixin(module, base=ModelBase):
         nullable = any((isinstance(o, NotDefined) and o.value.value is None) or
                        o.value is None for o in enum_cls)
 
+        max_length = max(len(o.name) for o in enum_cls)
+
         default = enum_cls.get_default()
 
         return KeyedEnumField(enum_cls,
                               choices=choices,
-                              default=default,
+                              default=default.name,
+                              max_length=max_length,
                               null=nullable)
 
     mixin_data, enum_map = cvss_mixin_data(module, field_callback)

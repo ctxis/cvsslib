@@ -7,13 +7,29 @@ from cvsslib.base_enum import NotDefined
 
 
 class KeyedEnumField(EnumField):
+    """
+    An enum field that stores the names of the values as strings, rather than the values.
+    """
     def get_prep_value(self, value):
+        if isinstance(value, str):
+            return value
+
         return value.name
 
     def to_python(self, value):
         if isinstance(value, str):
             return getattr(self.enum, value)
         return super().to_python(value)
+
+    def get_default(self):
+        if self.has_default():
+            if self.default is None:
+                return None
+
+            if isinstance(self.default, str):
+                return self.default
+
+        return super().get_default()
 
 
 def django_mixin(module, base=ModelBase):

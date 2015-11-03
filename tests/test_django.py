@@ -1,16 +1,30 @@
 import pytest
+from django_app.app.models import v2Model, v3Model  # Ensure you are running py.test in the tests/ directory.
 
 from cvsslib import cvss2, cvss3, parse_vector
+from cvsslib.base_enum import BaseEnum, NotDefined
 from cvsslib.vector import sorted_vector
+from cvsslib.contrib.django_model import KeyedEnumField
 from .cvss_scores import v3_test_vectors, v2_test_vectors
 
-from django_app.app.models import v2Model, v3Model # Ensure you are running py.test in the tests/ directory if this fails.
+
+class TempEnum(BaseEnum):
+    SOME_VALUE = 1
+    NOT_DEFINED = NotDefined(1)
+
+
+def test_field():
+    field = KeyedEnumField(TempEnum, default=TempEnum.NOT_DEFINED.name)
+    assert field.get_default() == TempEnum.NOT_DEFINED.name
+    assert field.get_prep_value(TempEnum.SOME_VALUE) == TempEnum.SOME_VALUE.name
+    assert field.to_python(TempEnum.SOME_VALUE.name) == TempEnum.SOME_VALUE
+    assert field.to_python(TempEnum.NOT_DEFINED.name) == TempEnum.NOT_DEFINED
 
 
 @pytest.mark.django_db
 def test_models():
     for vectors, module, model in [
-        (v3_test_vectors, cvss3, v3Model),  (v2_test_vectors, cvss2, v2Model)
+        (v3_test_vectors, cvss3, v3Model), (v2_test_vectors, cvss2, v2Model)
     ]:
         for vector, expected in vectors:
             vector = sorted_vector(vector)

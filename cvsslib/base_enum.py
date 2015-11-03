@@ -15,6 +15,9 @@ def make_display_name(str):
 
 
 class BaseEnum(enum.Enum):
+    def __call__(self, *args, **kwargs):
+        pass
+
     @classmethod
     def get_options(cls):
         docstring = inspect.getdoc(cls)
@@ -92,7 +95,7 @@ class BaseEnum(enum.Enum):
             type=BaseEnum
         )
         new_cls._parent = cls
-        new_cls.__doc__ = doc
+        new_cls.__doc__ = doc or cls.__doc__
         new_cls.__module__ = cls.__module__
         return new_cls
 

@@ -60,7 +60,8 @@ def django_mixin(module, base=ModelBase):
         def debug(self):
             result = []
             fields = [(field.attname, getattr(self, field.attname))
-                      for field in self._meta.get_fields() if isinstance(field, KeyedEnumField)]
+                      for field in self._meta.get_fields()
+                      if isinstance(field, KeyedEnumField)]
 
             ordered_enums = sorted(fields, key=operator.itemgetter(0))
             for name, value in ordered_enums:

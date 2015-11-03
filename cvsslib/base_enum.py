@@ -15,9 +15,6 @@ def make_display_name(str):
 
 
 class BaseEnum(enum.Enum):
-    def __call__(self, *args, **kwargs):
-        pass
-
     @classmethod
     def get_options(cls):
         docstring = inspect.getdoc(cls)
@@ -69,12 +66,16 @@ class BaseEnum(enum.Enum):
         if key in {"x", "nd"} and hasattr(cls, "NOT_DEFINED"):
             return cls.NOT_DEFINED
 
-        # Vectors is a way to override the keys given to a value. Used in CVSSv2
-        if hasattr(cls, "_vectors") and key in cls._vectors.value:
-            return getattr(cls, cls._vectors.value[key])
+        vector_override = {}
+
+        if hasattr(cls, "_vectors"):
+            vector_override = cls._vectors.value
+
+        if key in vector_override:
+            return getattr(cls, vector_override[key])
 
         for name, value in cls.members():
-            if name == "NOT_DEFINED":
+            if name == "NOT_DEFINED" or name in vector_override.values():
                 continue
 
             if name[0].lower() == key:

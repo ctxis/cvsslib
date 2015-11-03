@@ -19,15 +19,22 @@ def get_enums(obj, only_classes=True):
 
 
 def run_calc(function, *args, getter=None,
-             override=None, _parent_override=None, **kwargs):
+             override=None, _parent_override=None,
+             override_types=None, _parent_override_types=None,
+             **kwargs):
     if getter is None:
         raise RuntimeError("Must supply a getter argument!")
 
+    override_types = override_types or {}
     override = override or {}
 
     if _parent_override:
         _parent_override.update(override)
         override = _parent_override
+
+    if _parent_override_types:
+        _parent_override_types.update(override_types)
+        override_types = _parent_override_types
 
     def argument_getter(*args, **kwargs):
         res = getter(*args, **kwargs)
@@ -36,7 +43,8 @@ def run_calc(function, *args, getter=None,
         return res.value
 
     default_args = {
-        "run_calculation": partial(run_calc, getter=getter, _parent_override=override),
+        "run_calculation": partial(run_calc, getter=getter,
+                                   _parent_override=override, _parent_override_types=override_types),
         "get": getter
     }
 
@@ -55,6 +63,10 @@ def run_calc(function, *args, getter=None,
             continue
 
         annotated_type = argspec.annotations[func_arg]
+        annotated_type_name = annotated_type.__name__
+
+        if annotated_type_name in override_types:
+            annotated_type = override_types[annotated_type_name]
 
         if override and annotated_type in override:
             value = override[annotated_type]

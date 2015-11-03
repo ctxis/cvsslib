@@ -37,16 +37,12 @@ def test_cvss_class_mixin():
             vector = sorted_vector(vector)
 
             instance = cls()
-            instance.from_vector(
-                parse_vector(vector, module)
-            )
+            instance.from_vector(vector)
 
             new_vector = instance.to_vector()
 
             new_instance = cls()
-            new_instance.from_vector(
-                parse_vector(new_vector, module)
-            )
+            new_instance.from_vector(new_vector)
 
             assert vector == new_vector
 

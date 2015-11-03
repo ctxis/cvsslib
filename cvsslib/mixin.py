@@ -1,7 +1,7 @@
 from functools import partial
 
 from .utils import get_enums, run_calc
-from .vector import to_vector
+from .vector import to_vector, parse_vector
 import operator
 
 
@@ -66,6 +66,9 @@ def utils_mixin(module, enum_map):
             return to_vector(module, self._getter)
 
         def from_vector(self, vector_result):
+            if isinstance(vector_result, str):
+                vector_result = parse_vector(vector_result, module)
+
             for cls, value in vector_result.items():
                 attr_name = enum_map[cls]
                 setattr(self, attr_name, value)

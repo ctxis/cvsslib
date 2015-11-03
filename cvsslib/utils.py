@@ -44,7 +44,8 @@ def run_calc(function, *args, getter=None,
 
     default_args = {
         "run_calculation": partial(run_calc, getter=getter,
-                                   _parent_override=override, _parent_override_types=override_types),
+                                   _parent_override=override,
+                                   _parent_override_types=override_types),
         "get": getter
     }
 

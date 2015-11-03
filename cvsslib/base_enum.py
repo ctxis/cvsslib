@@ -88,7 +88,7 @@ class BaseEnum(enum.Enum):
                  make_display_name(name)) for name, value in cls.members()]
 
     @classmethod
-    def extend(cls, name, extra, doc=""):
+    def extend(cls, name, extra, doc="", mod=None):
         new_cls = enum.Enum(
             value=name,
             names=cls.to_mapping(extra),
@@ -96,7 +96,7 @@ class BaseEnum(enum.Enum):
         )
         new_cls._parent = cls
         new_cls.__doc__ = doc or cls.__doc__
-        new_cls.__module__ = cls.__module__
+        new_cls.__module__ = mod or cls.__module__
         return new_cls
 
     @classmethod

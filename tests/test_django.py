@@ -36,3 +36,5 @@ def test_models():
 
             assert inst.calculate() == expected
             assert inst.to_vector() == vector
+
+            assert inst.debug()

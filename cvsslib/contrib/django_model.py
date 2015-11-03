@@ -1,3 +1,5 @@
+import operator
+
 from django.db.models.base import ModelBase
 
 from enumfields import EnumField
@@ -54,9 +56,21 @@ def django_mixin(module, base=ModelBase):
     mixin_data, enum_map = cvss_mixin_data(module, field_callback)
     Utils = utils_mixin(module, enum_map)
 
+    class DjangoUtils(Utils):
+        def debug(self):
+            result = []
+            fields = [(field.attname, getattr(self, field.attname))
+                      for field in self._meta.get_fields() if isinstance(field, KeyedEnumField)]
+
+            ordered_enums = sorted(fields, key=operator.itemgetter(0))
+            for name, value in ordered_enums:
+                result.append("{name} = {value}".format(name=name, value=value))
+
+            return result
+
     class CVSSMetaclass(base):
         def __new__(cls, name, bases, attrs):
-            bases = (Utils,) + bases
+            bases = (DjangoUtils,) + bases
             return super().__new__(cls, name, bases, attrs)
 
         @classmethod

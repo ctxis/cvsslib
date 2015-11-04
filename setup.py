@@ -9,7 +9,7 @@ if sys.version_info < (3, 4):
 
 setup(
     name='cvsslib',
-    version='0.3.1',
+    version='0.4',
     packages=['cvsslib', 'cvsslib.cvss2', 'cvsslib.cvss3', 'cvsslib.contrib'],
     url='https://github.com/ctxis/cvsslib',
     license='GPL',

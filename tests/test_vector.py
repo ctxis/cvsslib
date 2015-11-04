@@ -1,18 +1,18 @@
 from cvsslib.vector import calculate_vector, parse_vector, sorted_vector
 from cvsslib import CVSS2State, CVSS3State,  cvss3, cvss2
 from cvsslib.utils import get_enums
-from .cvss_scores import v3_test_vectors, v2_test_vectors
+from cvsslib.example_vectors import v3_vectors, v2_vectors
 
 
 def test_v3_vector():
-    for vector, results in v3_test_vectors:
+    for vector, results in v3_vectors:
         score = calculate_vector(vector, cvss3)
 
         assert results == score, "Vector {0} failed".format(vector)
 
 
 def test_v2_vector():
-    for vector, results in v2_test_vectors:
+    for vector, results in v2_vectors:
         score = calculate_vector(vector, cvss2)
 
         assert results == score, "Vector {0} failed".format(vector)
@@ -21,7 +21,7 @@ def test_v2_vector():
 def test_cvss_class_mixin():
     # Test that an instance of every enum class is present within each of the state classes
 
-    for cls, module, vectors in [(CVSS2State, cvss2, v2_test_vectors), (CVSS3State, cvss3, v3_test_vectors)]:
+    for cls, module, vectors in [(CVSS2State, cvss2, v2_vectors), (CVSS3State, cvss3, v3_vectors)]:
         instance = cls()
 
         enum_classes_in_module = set([x[1] for x in get_enums(module)])

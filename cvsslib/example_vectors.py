@@ -1,4 +1,4 @@
-v3_test_vectors = [
+v3_vectors = [
     ("CVSS:3.0/AV:L/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N/MAV:A/MAC:L/MPR:N/MUI:N/MS:U/MC:N/MI:N/MA:N", (4.6, 4.6, 0.0)),
     ("CVSS:3.0/AV:L/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N/MAV:A/MAC:L/MPR:N/MUI:N/MS:U/MC:L/MI:N/MA:N", (4.6, 4.6, 4.3)),
     ("CVSS:3.0/AV:L/AC:L/PR:H/UI:R/S:U/C:H/I:N/A:H/E:H/RL:W/RC:U/CR:H/IR:H/AR:M/MAV:L/MAC:L/MPR:H/MUI:N/MS:C/MC:N/MI:H/MA:L", (5.8, 5.2, 7.4)),
@@ -33,7 +33,7 @@ v3_test_vectors = [
 ]
 
 
-v2_test_vectors = [
+v2_vectors = [
     ("AV:L/AC:M/Au:S/C:N/I:P/A:C/E:U/RL:OF/RC:UR/CDP:N/TD:L/CR:H/IR:H/AR:H", (5, 3.5, 1.2)),
     ("AV:N/AC:M/Au:M/C:C/I:N/A:P/RL:W/RC:UC/CDP:LM/TD:M/CR:L/IR:L/AR:L", (6.4, 5.5, 4)),
     ("AV:L/AC:L/Au:S/C:P/I:P/A:P/E:U/RC:C/CDP:LM/TD:L/IR:H/AR:M", (4.3, 3.7, 1.5)),

@@ -69,7 +69,7 @@ def django_mixin(module, base=ModelBase):
 
             return result
 
-    class CVSSMetaclass(base):
+    class MetaClass(base):
         def __new__(cls, name, bases, attrs):
             bases = (DjangoUtils,) + bases
             return super().__new__(cls, name, bases, attrs)
@@ -81,4 +81,4 @@ def django_mixin(module, base=ModelBase):
 
             return returner
 
-    return CVSSMetaclass
+    return MetaClass

@@ -1,5 +1,5 @@
 import pytest
-from django_app.app.models import v2Model, v3Model  # Ensure you are running py.test in the tests/ directory.
+from django_app.app.models import v2Model, v3Model, namedModel  # Ensure you are running py.test in the tests/ directory.
 
 from cvsslib import cvss2, cvss3, parse_vector
 from cvsslib.base_enum import BaseEnum, NotDefined
@@ -11,6 +11,12 @@ from cvsslib.example_vectors import v3_vectors, v2_vectors
 class TempEnum(BaseEnum):
     SOME_VALUE = 1
     NOT_DEFINED = NotDefined(1)
+
+
+def test_named_metaclass():
+    base = namedModel.__bases__[0]
+    assert base.__name__ == "namedMeta.django_utils"
+    assert base.__module__ == "django_app.app.models"
 
 
 def test_field():

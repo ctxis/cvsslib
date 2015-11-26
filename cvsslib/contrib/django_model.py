@@ -34,7 +34,7 @@ class KeyedEnumField(EnumField):
         return super().get_default()
 
 
-def django_mixin(module, base=ModelBase):
+def django_mixin(module, base=ModelBase, attr_name=None):
     # This is a function that takes a module (filled with enums and a function called 'calculate')
     # and wires it up into a Django model that we can use.
 
@@ -71,7 +71,13 @@ def django_mixin(module, base=ModelBase):
 
     class MetaClass(base):
         def __new__(cls, name, bases, attrs):
-            bases = (DjangoUtils,) + bases
+            cls_base = DjangoUtils
+
+            if "__module__" in attrs:
+                DjangoUtils.__module__ = attrs["__module__"]
+
+            bases = (cls_base,) + bases
+
             return super().__new__(cls, name, bases, attrs)
 
         @classmethod
@@ -80,5 +86,10 @@ def django_mixin(module, base=ModelBase):
             returner.update(mixin_data)
 
             return returner
+
+    MetaClass.django_utils = DjangoUtils
+
+    if attr_name:
+        DjangoUtils.__name__ = attr_name + ".django_utils"
 
     return MetaClass

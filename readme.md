@@ -70,6 +70,13 @@ x = CVSSModel()
 x.save()
 x.exploitability
 ```
+
+If you want it to work with django Migrations you need to give an attribute name to the `django_mixin` function. This
+should match the attribute name it is being assigned to:
+
+```python
+CVSSBase = django_mixin(cvss2, attr_name="CVSSBase")
+```
  
 And there is a command line tool available:
  

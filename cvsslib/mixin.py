@@ -1,8 +1,24 @@
 from functools import partial
-
 from .utils import get_enums, run_calc
 from .vector import to_vector, parse_vector
 import operator
+
+
+class BaseCVSSUtilsMixin(object):
+    ENUM_MODULE = None
+
+    @classmethod
+    def enum_module(cls):
+        return cls.ENUM_MODULE
+
+    def debug(self):
+        result = []
+
+        ordered_enums = sorted(get_enums(self, only_classes=False), key=operator.itemgetter(0))
+        for name, value in ordered_enums:
+            result.append("{name} = {value}".format(name=name, value=value))
+
+        return result
 
 
 def make_attribute_name(str):
@@ -44,15 +60,8 @@ def utils_mixin(module, enum_map):
     if not calculate_func:
         raise RuntimeError("Cannot find 'calculate' method in {module}".format(module=module))
 
-    class CVSSUtilsMixin(object):
-        def debug(self):
-            result = []
-
-            ordered_enums = sorted(get_enums(self, only_classes=False), key=operator.itemgetter(0))
-            for name, value in ordered_enums:
-                result.append("{name} = {value}".format(name=name, value=value))
-
-            return result
+    class CVSSUtilsMixin(BaseCVSSUtilsMixin):
+        ENUM_MODULE = module
 
         def _getter(self, enum_type):
             member_name = enum_map[enum_type]

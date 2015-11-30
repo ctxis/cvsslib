@@ -18,6 +18,9 @@ class BaseEnum(enum.Enum):
     @classmethod
     def get_options(cls):
         docstring = inspect.getdoc(cls)
+        if docstring is None:
+            return {}
+
         lines = docstring.strip().split("\n")
         options = {
             line.split(":")[0].lower().strip(): line.split(":")[1].strip()

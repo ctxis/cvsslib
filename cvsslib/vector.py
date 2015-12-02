@@ -65,14 +65,15 @@ def calculate_vector(vector, module):
     return run_calc(module.calculate, getter=_getter)
 
 
-def parse_vector(vector, module=None):
+def parse_vector(vector, module=None, mandatory_error=True):
     if module is None:
         module = detect_vector(vector)
 
     vector_map, vector_values = {}, {}
     mandatory_keys, given_keys = set(), set()
+    enums = dict(get_enums(module))
 
-    for name, enum in get_enums(module):
+    for name, enum in enums.items():
         options = enum.get_options()
         vector_name = options["vector"]
 
@@ -105,6 +106,12 @@ def parse_vector(vector, module=None):
     required_diff = mandatory_keys.difference(given_keys)
 
     if required_diff:
-        raise VectorError("Missing mandatory keys {0}".format(required_diff))
+        if mandatory_error:
+            raise VectorError("Missing mandatory keys {0}".format(required_diff))
+
+        for enum_key in required_diff:
+            enum = vector_map[enum_key]
+            default = enum.get_default()
+            vector_values[enum] = default
 
     return vector_values

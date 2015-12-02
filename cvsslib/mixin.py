@@ -74,9 +74,9 @@ def utils_mixin(module, enum_map):
         def to_vector(self):
             return to_vector(module, self._getter)
 
-        def from_vector(self, vector_result):
+        def from_vector(self, vector_result, **kwargs):
             if isinstance(vector_result, str):
-                vector_result = parse_vector(vector_result, module)
+                vector_result = parse_vector(vector_result, module, **kwargs)
 
             for cls, value in vector_result.items():
                 attr_name = enum_map[cls]

@@ -1,6 +1,6 @@
 # CVSSlib [![Build Status](https://travis-ci.org/ctxis/cvsslib.svg?branch=master)](https://travis-ci.org/ctxis/cvsslib)
 
-A Pythyon library for calculating CVSS v2 and CVSS v3 vectors, with tests. Examples on how to use
+A Python 3 library for calculating CVSS v2 and CVSS v3 vectors, with tests. Examples on how to use
 the library is shown below, and there is some documentation on the internals within the `docs` directory.
 
 ## API
@@ -33,12 +33,13 @@ if value != cvss2.ReportConfidence.NOT_DEFINED:
 ```  
         
 There are some powerful mixin functions if you need a class with CVSS members. These functions
-take a cvss version and return a base class you can inherit from. This class has
+take a cvss version and return a base class you can inherit from. This class hassome utility functions like 
+`to_vector()` and `from_vector()` you can use.
 
 ```python
-from cvsslib import cvss2, class_mixin
+from cvsslib import cvss3, class_mixin
 
-BaseClass = class_mixin(cvss2)  # Can pass cvss3 module instead
+BaseClass = class_mixin(cvss3)  # Can pass cvss2 module instead
 
 class SomeObject(BaseClass):
     def print_stats(self):
@@ -48,6 +49,8 @@ class SomeObject(BaseClass):
 state = SomeObject()
 print("\n".join(state.debug()))
 print(state.calculate())
+state.from_vector("CVSS:3.0/AV:L/AC:L/PR:H/UI:R/S:U/C:H/I:N/A:H/MPR:N")
+print("Vector: " + state.to_vector())
 
 # Access members:
 if state.report_confidence == ReportConfidence.NOT_DEFINED:
@@ -59,10 +62,11 @@ It also supports Django models. Requires the `django-enumfields` package.
 ```python
 from cvsslib.contrib.django_model import django_mixin
 from cvsslib import cvss2
+from django.db import models
 
 CVSSBase = django_mixin(cvss2)
 
-class CVSSModel(CVSSBase)
+class CVSSModel(models.Model, metaclass=CVSSBase)
     pass
     
 # CVSSModel now has lots of enum you can use

@@ -1,6 +1,6 @@
 # CVSSlib [![Build Status](https://travis-ci.org/ctxis/cvsslib.svg?branch=master)](https://travis-ci.org/ctxis/cvsslib)
 
-A library that supports calculating values from CVSS2 and CVSS3 vectors, with tests. Examples on how to use
+A Pythyon library for calculating CVSS v2 and CVSS v3 vectors, with tests. Examples on how to use
 the library is shown below, and there is some documentation on the internals within the `docs` directory.
 
 ## API

@@ -5,6 +5,8 @@ the library is shown below, and there is some documentation on the internals wit
 is designed to be completely extendable, so it is possible to implement your own custom scoring systems (or those of your clients)
 and have it work with the same API, and with the same bells and whistles.
 
+**Python 3 only**
+
 ## API
 
 It's pretty simple to use. `cvsslib` has a `cvss2` and `cvss3` sub modules that contains all of the enums

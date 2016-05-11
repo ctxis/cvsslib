@@ -7,6 +7,9 @@ requirements = []
 if sys.version_info < (3, 4):
     requirements.append("enum34")
 
+if sys.version_info < (3, 2):
+    requirements.append("backports.functools_lru_cache")
+
 setup(
     name='cvsslib',
     version='0.5.3',

@@ -2,6 +2,16 @@ import inspect
 from functools import partial
 from .base_enum import BaseEnum, NotDefined
 
+try:
+    from functools import lru_cache
+except ImportError:
+    from backports.functools_lru_cache import lru_cache
+
+
+@lru_cache(100)
+def _cached_get_argspec(func):
+    return inspect.getfullargspec(func)
+
 
 def get_enums(obj, only_classes=True):
     module_members = inspect.getmembers(obj)
@@ -51,7 +61,7 @@ def run_calc(function, *args, getter=None,
 
     extra_args = list(args)
     call_args = []
-    argspec = inspect.getfullargspec(function)
+    argspec = _cached_get_argspec(function)
 
     for func_arg in argspec.args:
         if func_arg not in argspec.annotations:

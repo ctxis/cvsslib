@@ -1,6 +1,11 @@
 import enum
 import inspect
 
+try:
+    from functools import lru_cache
+except ImportError:
+    from backports.functools_lru_cache import lru_cache
+
 
 class NotDefined(object):
     def __init__(self, value=None):
@@ -16,6 +21,7 @@ def make_display_name(str):
 
 class BaseEnum(enum.Enum):
     @classmethod
+    @lru_cache()
     def get_options(cls):
         docstring = inspect.getdoc(cls)
         if docstring is None:
@@ -63,6 +69,7 @@ class BaseEnum(enum.Enum):
         return value.upper()
 
     @classmethod
+    @lru_cache()
     def get_value_from_vector_key(cls, key):
         key = key.lower()
 

@@ -2,6 +2,40 @@ from cvsslib.vector import calculate_vector, parse_vector, sorted_vector
 from cvsslib import CVSS2State, CVSS3State,  cvss3, cvss2
 from cvsslib.utils import get_enums
 from cvsslib.example_vectors import v3_vectors, v2_vectors
+import pathlib
+
+
+data_dir = pathlib.Path(__file__).parent / "files"
+
+
+def split_vector(line):
+    vector, rest = line.split(" - ", 1)
+    rest = rest.replace("(", "").replace(")", "").strip().split(", ")
+    score = (float(rest[0]),
+             float(rest[1]) if rest[1] != 'None' else None,
+             float(rest[2]) if rest[2] != 'None' else None)
+
+    return vector, score
+
+
+def test_v3_vector_files():
+    for name in ("vectors_random3", "vectors_simple3"):
+        with (data_dir / name).open() as fd:
+            for line in fd:
+                vector, score = split_vector(line)
+
+                parsed = calculate_vector(vector, cvss3)
+                assert parsed == score
+
+
+def test_v2_vector_files():
+    for name in ("vectors_random2", "vectors_simple2"):
+        with (data_dir / name).open() as fd:
+            for line in fd:
+                vector, score = split_vector(line)
+
+                parsed = calculate_vector(vector, cvss2)
+                assert parsed == score
 
 
 def test_v3_vector():

@@ -1,7 +1,9 @@
 # CVSSlib [![Build Status](https://travis-ci.org/ctxis/cvsslib.svg?branch=master)](https://travis-ci.org/ctxis/cvsslib)
 
 A Python 3 library for calculating CVSS v2 and CVSS v3 vectors, with tests. Examples on how to use
-the library is shown below, and there is some documentation on the internals within the `docs` directory.
+the library is shown below, and there is some documentation on the internals within the `docs` directory. The library 
+is designed to be completely extendable, so it is possible to implement your own custom scoring systems (or those of your clients)
+and have it work with the same API, and with the same bells and whistles.
 
 ## API
 
@@ -90,3 +92,45 @@ Base Score:     5.3
 Temporal:       4.6
 Environment:    1.3
  ```
+ 
+ ## Custom Scoring Systems
+ Creating a new scoring system is very simple. First create a Python file with the correct name, e.g `super_scores.py`. 
+ Next create some enums with the correct values for your system:
+ 
+ ```python
+ from cvsslib.base_enum import BaseEnum
+ 
+ 
+ class Risk(BaseEnum):
+     """
+     Vector: S
+     """
+     HIGH = 1
+     MEDIUM = 2
+     LOW = 3
+     
+ class Difficulty(BaseEnum):
+     """
+     Vector: D
+     """
+     DIFFICULT = 1
+     MODERATE = 2
+     EASY = 3
+```
+ 
+And lastly add a `calculate` function in the module that accepts some vector values and 
+returns a result of some kind:
+
+```python
+
+def calculate(difficulty: Difficulty, risk: Risk):
+   if difficulty == Difficulty.EASY and risk == Risk.CRITICAL:
+       return "oh nuts you're screwed"
+   
+   return "You're probs ok m8"
+```
+
+Once you define this you can pass your `super_scores` module to any 
+cvsslib function like `calculate_vector` or `django_mixin` and it will 
+all just work. You can even serialize the data to and from a vector 
+if you define the correct `vector: X` in the enum docstrings.

@@ -91,13 +91,14 @@ And there is a command line tool available:
 Base Score:     5.3
 Temporal:       4.6
 Environment:    1.3
- ```
+```
  
- ## Custom Scoring Systems
- Creating a new scoring system is very simple. First create a Python file with the correct name, e.g `super_scores.py`. 
- Next create some enums with the correct values for your system:
+## Custom Scoring Systems
+
+Creating a new scoring system is very simple. First create a Python file with the correct name, e.g `super_scores.py`. 
+Next create some enums with the correct values for your system:
  
- ```python
+```python
  from cvsslib.base_enum import BaseEnum
  
  

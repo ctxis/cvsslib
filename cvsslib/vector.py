@@ -18,20 +18,6 @@ def detect_vector(vector):
     return module
 
 
-def sorted_vector(vector):
-    replaced = False
-    if vector.startswith("CVSS:3.0/"):
-        vector = vector.replace("CVSS:3.0/", "")
-        replaced = True
-
-    vector = "/".join(sorted(vector.split("/")))
-
-    if replaced:
-        vector = "CVSS:3.0/" + vector
-
-    return vector
-
-
 def to_vector(module, getter):
     vectors = []
 

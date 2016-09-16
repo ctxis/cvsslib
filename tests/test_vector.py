@@ -1,4 +1,4 @@
-from cvsslib.vector import calculate_vector, parse_vector, sorted_vector
+from cvsslib.vector import calculate_vector
 from cvsslib import CVSS2State, CVSS3State,  cvss3, cvss2
 from cvsslib.utils import get_enums
 from cvsslib.example_vectors import v3_vectors, v2_vectors
@@ -68,8 +68,6 @@ def test_cvss_class_mixin():
         # are all equal.
 
         for vector, expected in vectors:
-            vector = sorted_vector(vector)
-
             instance = cls()
             instance.from_vector(vector)
 

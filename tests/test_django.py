@@ -3,7 +3,6 @@ from django_app.app.models import v2Model, v3Model, namedModel  # Ensure you are
 
 from cvsslib import cvss2, cvss3, parse_vector
 from cvsslib.base_enum import BaseEnum, NotDefined
-from cvsslib.vector import sorted_vector
 from cvsslib.contrib.django_model import KeyedEnumField
 from cvsslib.example_vectors import v3_vectors, v2_vectors
 
@@ -33,7 +32,6 @@ def test_models():
         (v3_vectors, cvss3, v3Model), (v2_vectors, cvss2, v2Model)
     ]:
         for vector, expected in vectors:
-            vector = sorted_vector(vector)
             inst = model()
             inst.from_vector(
                 parse_vector(vector, module)

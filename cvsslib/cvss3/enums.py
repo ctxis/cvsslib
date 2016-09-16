@@ -156,7 +156,7 @@ ModifiedAttackComplexity = AttackComplexity.extend("ModifiedAttackComplexity", {
                                                    "Vector: MAC")
 
 ModifiedPrivilegesRequired = PrivilegeRequired.extend("ModifiedPrivilegesRequired", {"NOT_DEFINED": NotDefined()},
-                                                     "Vector: MPR")
+                                                      "Vector: MPR")
 
 ModifiedUserInteraction = UserInteraction.extend("ModifiedUserInteraction", {"NOT_DEFINED": NotDefined()},
                                                  "Vector: MUI")
@@ -176,3 +176,33 @@ OPTIONAL_VALUES = {
     ModifiedUserInteraction, ModifiedScope, ModifiedConfidentialityImpact,
     ModifiedIntegrityImpact, ModifiedAvailabilityImpact
 }
+
+ORDERING = (
+    AttackVector,
+    AttackComplexity,
+    PrivilegeRequired,
+    UserInteraction,
+
+    Scope,
+    ConfidentialityImpact,
+    IntegrityImpact,
+    AvailabilityImpact,
+
+    ExploitCodeMaturity,
+    RemediationLevel,
+    ReportConfidence,
+
+    ConfidentialityRequirement,
+    IntegrityRequirement,
+    AvailabilityRequirement,
+
+    ModifiedAttackVector,
+    ModifiedAttackComplexity,
+    ModifiedPrivilegesRequired,
+    ModifiedUserInteraction,
+    ModifiedScope,
+
+    ModifiedConfidentialityImpact,
+    ModifiedIntegrityImpact,
+    ModifiedAvailabilityImpact
+)

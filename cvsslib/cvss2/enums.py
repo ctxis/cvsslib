@@ -171,3 +171,24 @@ ENVIRONMENTAL_METRICS = {
     IntegrityRequirement,
     AvailabilityRequirement
 }
+
+ORDERING = (
+    AccessVector,
+    AccessComplexity,
+    Authentication,
+
+    ConfidentialityImpact,
+    IntegrityImpact,
+    AvailabilityImpact,
+
+    Exploitability,
+    RemediationLevel,
+    ReportConfidence,
+
+    CollateralDamagePotential,
+    TargetDistribution,
+
+    ConfidentialityRequirement,
+    IntegrityRequirement,
+    AvailabilityRequirement
+)

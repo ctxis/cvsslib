@@ -4,7 +4,7 @@ from cvsslib import cvss3, cvss2
 from cvsslib.utils import get_enums, run_calc
 
 
-class VectorError(Exception):
+class VectorError(ValueError):
     def __init__(self, message):
         self.message = message
 

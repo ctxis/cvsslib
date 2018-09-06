@@ -1,15 +1,20 @@
 language: python
 python:
-  - "3.3"
-  - "3.4"
   - "3.5"
+  - "3.6"
   - "pypy3"
+env:
+  - DJANGO=1.11.0
+  - DJANGO=2.0.0
+  - DJANGO=2.1.0
 # command to install dependencies
+cache: pip
 install:
   - pip install --upgrade pip wheel
   - pip install -r test_requirements.txt
+  - pip install django~=$DJANGO
   - pip install .
 # command to run tests
 script: 
   - export PYTHONPATH=./tests/:$PYTHONPATH
-  - cd tests && py.test . -vv
+  - cd tests && py.test . -l -n auto

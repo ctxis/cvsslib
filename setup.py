@@ -22,6 +22,7 @@ setup(
     long_description='A library for manipulating CVSS v2 and v3 vectors. Visit the github page '
                      '(https://github.com/ctxis/cvsslib) for examples and documentation.',
     install_requires=requirements,
+    python_requires='>=3',
     entry_points={
         'console_scripts': ['cvss=cvsslib.command:main'],
     },

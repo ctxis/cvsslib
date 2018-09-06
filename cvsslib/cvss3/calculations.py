@@ -55,7 +55,7 @@ def calculate_modified_impact_sub_score(scope: ModifiedScope,
         (1 - modified_conf * conf_req) *
         (1 - modified_integ * integ_req) *
         (1 - modified_avail * avail_req),
-        0.915
+        D("0.915")
     )
 
     if scope == ModifiedScope.UNCHANGED.value:
